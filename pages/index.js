@@ -340,10 +340,9 @@ Page({
 
         // invalid data if input is out of the range (min, max]
         let invalid = false;
-        if (isNaN(Number(value)) == true || Number(value) > max || Number(value) < min || value === '') {
+        if (isNaN(Number(value)) == true || Number(value) > max || (iname === 'Weight' ? Number(value) <= min : Number(value) < min) || value === ''){
             invalid = true;
         }
-
 
         if (iname === 'Term' || iname === 'Weight' || iname === 'Midterm' || iname === 'Final') {
             // update the value input
