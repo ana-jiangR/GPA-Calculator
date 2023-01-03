@@ -23,18 +23,18 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <view class="page" data-weui-theme="{{theme}}" data-weui-mode="{{mode}}">
   <view class="page__hd" style="padding-left: 10px;padding-right: 10px; padding-bottom: 15px;padding-top: 5px;">
-    <view class="page__title" style="text-align: center">This miniprogram caculates GPA scores based on your inputs of each course</view>
+    <view class="page__title" style="text-align: center">This miniprogram caculates your GPA based on your inputs of each course.</view>
   </view>
 
   <view class="page__bd page__bd_spacing">
-    <view class="page__title" style="text-align: center; font-weight: 500;color:rgba(0, 0, 255, 0.692); font-size:x-large;">Your weighted GPA is "{{weightedGPA == -100? 'n/a': weightedGPA}}" </view>
+    <view class="page__title" style="text-align: center; font-weight: 700; color: rgba(0, 0, 205, 0.692); font-size: x-large">Your weighted GPA is: {{weightedGPA == -100? 'N/A': weightedGPA}} </view>
     <view class="kind-list">
       <block wx:for="{{list}}" wx:key="uniquename" wx:for-index="index" wx:for-item="item">
         <view class="kind-list__item">
           <view id="{{index}}" class="weui-flex kind-list__item-hd {{item.expand ? 'kind-list__item-hd_show' : ''}}" bindtap="kindToggle">
             <view class="weui-flex__item" style="font-weight: bold;">{{item.uniquename}}</view>
-            <view class="weui-flex__item" style="font-weight: bold;">{{"Grade: "}}{{item.entriesx.Grade.value === '' ? 'n/a': item.entriesx.Grade.value}}</view>
-            <view class="weui-flex__item" style="font-weight: bold;">{{"GPA: "}}{{item.entriesx.GPA.value == -100 ? 'n/a': item.entriesx.GPA.value}}</view>
+            <view class="weui-flex__item" style="font-weight: bold;">{{"Grade: "}}{{item.entriesx.Grade.value === '' ? 'N/A': item.entriesx.Grade.value}}</view>
+            <view class="weui-flex__item" style="font-weight: bold;">{{"GPA: "}}{{item.entriesx.GPA.value == -100 ? 'N/A': item.entriesx.GPA.value}}</view>
             <!-- <view class="weui-flex__item" >{{index}}</view> -->
             <image class="kind-list__img" src="{{item.iconpng}}"></image>
           </view>
@@ -169,13 +169,13 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <view class="weui-flex">
       <view class="weui-flex__item" style="padding-left: 0px; padding-right: 5px;">
         <picker mode="selector" bindchange="bindPickerAddCourse" value="{{0}}" range="{{newCourseArray}}" style="height: 30px;" disabled="{{(newCourseArray.length === 0)? true:false}}">
-          <button style=" float:left; width: 100% ; color:#fff; background-color:{{(newCourseArray.length === 0)? 'rgba(0, 0, 255, 0.315)':'rgba(0, 0, 255, 0.692)'}}; line-height: 29px; text-align: center;">Course (+)</button>
+          <button style="float: left; width: 100%; color: #fff; background-color: {{(newCourseArray.length === 0)? 'rgba(0, 0, 255, 0.315)':'rgba(0, 0, 205, 0.692)'}}; line-height: 29px; text-align: center">Course (+)</button>
         </picker>
       </view>
 
       <view class="weui-flex__item" style="padding-left: 5px; padding-right: 0px;">
         <picker mode="selector" bindchange="bindPickerDelCourse" value="{{0}}" range="{{existingCourseArray}}" style="height: 30px;" disabled="{{(existingCourseArray.length === 0)? true:false}}">
-          <button style="float:right; width: 100% ; color:#fff; background-color:{{(existingCourseArray.length === 0)? 'rgba(0, 0, 255, 0.315)':'rgba(0, 0, 255, 0.692)'}}; line-height: 29px; text-align: center;" >Course (-)</button>
+          <button style="float: right; width: 100%; color: #fff; background-color: {{(existingCourseArray.length === 0)? 'rgba(0, 0, 255, 0.315)':'rgba(0, 0, 205, 0.692)'}}; line-height: 29px; text-align: center" >Course (-)</button>
         </picker>
       </view>
     </view>
