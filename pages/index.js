@@ -528,7 +528,7 @@ Page({
         } = e.currentTarget;
         let index = Number(id);
 
-        console.log("onReset: id:%o, name:%o", id, list[index].uniquename);
+        // console.log("onReset: id:%o, name:%o", id, list[index].uniquename);
 
         // get current Object Entries.
         let listEntryObj = list[index].entriesx;
@@ -568,7 +568,7 @@ Page({
         // update this.data.weightedGPA
         weightedGPA = getWeightedGPA(this.data.list);
         
-        console.log(list[index].entriesx);
+        // console.log(list[index].entriesx);
 
         this.setData({
             weightedGPA: weightedGPA.toFixed(3),
