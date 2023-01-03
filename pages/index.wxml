@@ -1,0 +1,225 @@
+<!-- 
+The MIT License (MIT)
+Copyright © 2022-2023 Yunhan Jiang (Ana)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
+associated documentation files (the “Software”), to deal in the Software without restriction, including 
+without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the 
+following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or 
+substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT 
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+-->
+
+
+<page-meta root-font-size="system"></page-meta>
+
+<view class="page" data-weui-theme="{{theme}}" data-weui-mode="{{mode}}">
+  <view class="page__hd" style="padding-left: 10px;padding-right: 10px; padding-bottom: 15px;padding-top: 5px;">
+    <view class="page__title" style="text-align: center">This miniprogram caculates GPA scores based on your inputs of each course</view>
+  </view>
+
+  <view class="page__bd page__bd_spacing">
+    <view class="page__title" style="text-align: center; font-weight: 500;color:rgba(0, 0, 255, 0.692); font-size:x-large;">Your weighted GPA is "{{weightedGPA == -100? 'n/a': weightedGPA}}" </view>
+    <view class="kind-list">
+      <block wx:for="{{list}}" wx:key="uniquename" wx:for-index="index" wx:for-item="item">
+        <view class="kind-list__item">
+          <view id="{{index}}" class="weui-flex kind-list__item-hd {{item.expand ? 'kind-list__item-hd_show' : ''}}" bindtap="kindToggle">
+            <view class="weui-flex__item" style="font-weight: bold;">{{item.uniquename}}</view>
+            <view class="weui-flex__item" style="font-weight: bold;">{{"Grade: "}}{{item.entriesx.Grade.value === '' ? 'n/a': item.entriesx.Grade.value}}</view>
+            <view class="weui-flex__item" style="font-weight: bold;">{{"GPA: "}}{{item.entriesx.GPA.value == -100 ? 'n/a': item.entriesx.GPA.value}}</view>
+            <!-- <view class="weui-flex__item" >{{index}}</view> -->
+            <image class="kind-list__img" src="{{item.iconpng}}"></image>
+          </view>
+
+          <view class="kind-list__item-bd {{item.expand ? 'kind-list__item-bd_show' : ''}}">
+            <view class="weui-cells {{item.expand ? 'weui-cells_show' : ''}}">
+              <!-- <form bindsubmit="formSubmit" bindreset="formReset"> -->
+              <!-- <view class="weui-form"> -->
+
+              <view class="weui-form__ctrl-area">
+                <view class="weui-cells__group weui-cells__group_form">
+
+                  <!-- Level 选择 -->
+                  <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-after">
+                    <view class="weui-cell__hd weui-flex">
+                      <label class="weui-label">{{item.entriesx.Level.name}}</label>
+                      <icon wx:if="{{(item.entriesx.Level.selected >= 0 && item.entriesx.Level.selected < levelarray.length) ? false:true}}" type="warn" size="20"></icon>
+                      <icon wx:if="{{(item.entriesx.Level.selected >= 0 && item.entriesx.Level.selected < levelarray.length) ? true :false}}" type="success" size="20"></icon>
+                    </view>
+
+                    <view class="weui-cell__bd">
+                      <picker id="{{index}}" bindchange="bindPickerLevelChange" range="{{levelarray}}">
+                        <view class="weui-select">{{levelarray[item.entriesx.Level.selected]}}</view>
+                      </picker>
+                    </view>
+                  </view>
+
+                  <!-- 权重weight -->
+                  <view class="weui-cell weui-cell_active">
+                    <view class="weui-cell__hd weui-flex">
+                      <label class="weui-label">{{item.entriesx.Weight.name}}</label>
+                      <icon wx:if="{{item.entriesx.Weight.isWaring}}" type="warn" size="22"></icon>
+                      <icon style="{{!item.entriesx.Weight.isWaring ? 'display:block' : 'display:none'}}" type="success" size="22"></icon>
+                    </view>
+                    <view class="weui-cell__bd weui-flex">
+                      <input id="{{index+'.'+item.entriesx.Weight.name}}" class="weui-input" placeholder="Weight: (0-5]" placeholder-class="weui-input__placeholder" type="digit" value="{{(item.entriesx.Weight.value == -100)? '': item.entriesx.Weight.value}}" bindinput="onInput" />
+                      <view wx:if="{{item.entriesx.Weight.isClearBtn}}" id="{{index+'.'+item.entriesx.Weight.name}}" class="weui-btn_reset weui-btn_icon weui-btn_input-clear" bindtap="onClear">
+                        <i class="weui-icon-clear"></i>
+                      </view>
+
+                    </view>
+                  </view>
+
+                  <!-- 平时成绩Term -->
+                  <view class="weui-cell weui-cell_active">
+                    <view class="weui-cell__hd weui-flex">
+                      <label class="weui-label">{{item.entriesx.Term.name}}</label>
+                      <icon wx:if="{{item.entriesx.Term.isWaring}}" type="warn" size="22"></icon>
+                      <icon style="{{!item.entriesx.Term.isWaring ? 'display:block' : 'display:none'}}" type="success" size="22"></icon>
+                    </view>
+                    <view class="weui-cell__bd weui-flex">
+                      <input id="{{index+'.'+item.entriesx.Term.name}}" class="weui-input" placeholder="Input Score: [0-100]" type="digit" placeholder-class="weui-input__placeholder" value="{{(item.entriesx.Term.value == -100)? '': item.entriesx.Term.value}}" bindinput="onInput" />
+
+                      <view wx:if="{{item.entriesx.Term.isClearBtn}}" id="{{index+'.'+item.entriesx.Term.name}}" class="weui-btn_reset weui-btn_icon weui-btn_input-clear" bindtap="onClear">
+                        <i class="weui-icon-clear"></i>
+                      </view>
+                    </view>
+                  </view>
+
+                  <!-- 期中成绩Midterm -->
+                  <view class="weui-cell weui-cell_active">
+                    <view class="weui-cell__hd weui-flex">
+                      <label class="weui-label">{{item.entriesx.Midterm.name}}</label>
+                      <icon wx:if="{{item.entriesx.Midterm.isWaring}}" type="warn" size="22"></icon>
+                      <icon style="{{!item.entriesx.Midterm.isWaring ? 'display:block' : 'display:none'}}" type="success" size="22"></icon>
+                    </view>
+                    <view class="weui-cell__bd weui-flex">
+                      <input id="{{index+'.'+item.entriesx.Midterm.name}}" class="weui-input" placeholder="Input Score: [0-100]" type="digit" placeholder-class="weui-input__placeholder" value="{{(item.entriesx.Midterm.value == -100)? '': item.entriesx.Midterm.value}}" bindinput="onInput" />
+
+                      <view wx:if="{{item.entriesx.Midterm.isClearBtn}}" id="{{index+'.'+item.entriesx.Midterm.name}}" class="weui-btn_reset weui-btn_icon weui-btn_input-clear" bindtap="onClear">
+                        <i class="weui-icon-clear"></i>
+                      </view>
+                    </view>
+                  </view>
+
+                  <!-- 期终成绩Final -->
+                  <view class="weui-cell weui-cell_active">
+                    <view class="weui-cell__hd weui-flex">
+                      <label class="weui-label">{{item.entriesx.Final.name}}</label>
+                      <icon wx:if="{{item.entriesx.Final.isWaring}}" type="warn" size="22"></icon>
+                      <icon style="{{!item.entriesx.Final.isWaring ? 'display:block' : 'display:none'}}" type="success" size="22"></icon>
+                    </view>
+
+                    <view class="weui-cell__bd weui-flex">
+                      <input id="{{index+'.'+item.entriesx.Final.name}}" class="weui-input" placeholder="Input Score: [0-100]" type="digit" placeholder-class="weui-input__placeholder" value="{{(item.entriesx.Final.value == -100)? '': item.entriesx.Final.value}}" bindinput="onInput" />
+
+                      <view wx:if="{{item.entriesx.Final.isClearBtn}}" id="{{index+'.'+item.entriesx.Final.name}}" class="weui-btn_reset weui-btn_icon weui-btn_input-clear" bindtap="onClear">
+                        <i class="weui-icon-clear"></i>
+                      </view>
+                    </view>
+                  </view>
+
+                  <!-- 显示总成绩Overall -->
+                  <view class="weui-cell weui-cell_active weui-cell_disabled">
+                    <view class="weui-cell__hd">
+                      <label class="weui-label" style="font-weight: bold;">{{item.entriesx.Overall.name}}</label>
+                    </view>
+                    <view class="weui-cell__bd">
+                      <input class="weui-input" style="font-weight: bold;" placeholder="Display overall score" value="{{item.entriesx.Overall.value == -100 ? '': item.entriesx.Overall.value}}" disabled />
+                    </view>
+                  </view>
+
+                  <!-- 显示Grade Level和 GPA分数 (上面bar上已经显示了) -->
+                  <!-- <view class="weui-flex kind-list__item-hd" style="padding-left: 17px"> -->
+                  <!-- <view class="weui-flex__item" style="font-weight: bold;">{{item.entriesx.Grade.name}}: {{item.entriesx.Grade.value === '' ? 'N/A': item.entriesx.Grade.value}}</view> -->
+                  <!-- <view class="weui-flex__item" style="font-weight: bold;">{{item.entriesx.GPA.name}}: {{item.entriesx.GPA.value == -100 ? 'N/A': item.entriesx.GPA.value}}</view> -->
+                  <!-- </view> -->
+
+
+                </view>
+              </view>
+
+              <!-- 确认提交和重置按钮 -->
+              <!-- <view class="weui-form__opr-area"> -->
+              <view style="display: flex; flex-direction: row; margin-top:5rpx; margin-bottom: 17rpx;">
+                <button class="weui-btn_primary" id="{{index}}" style="float: left; width: 45% ; color:#fff;" bindtap="onConfirm">Update</button>
+                <button class="weui-btn_default" id="{{index}}" style="float: right;width: 45% ;" bindtap="onReset">Reset</button>
+              </view>
+              <!-- </view> -->
+
+              <!-- </view>  "weui-form" -->
+
+
+              <!-- </form> -->
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 按钮：添加/删除课程 -->
+    <view class="weui-flex">
+      <view class="weui-flex__item" style="padding-left: 0px; padding-right: 5px;">
+        <picker mode="selector" bindchange="bindPickerAddCourse" value="{{0}}" range="{{newCourseArray}}" style="height: 30px;" disabled="{{(newCourseArray.length === 0)? true:false}}">
+          <button style=" float:left; width: 100% ; color:#fff; background-color:{{(newCourseArray.length === 0)? 'rgba(0, 0, 255, 0.315)':'rgba(0, 0, 255, 0.692)'}}; line-height: 29px; text-align: center;">Course (+)</button>
+        </picker>
+      </view>
+
+      <view class="weui-flex__item" style="padding-left: 5px; padding-right: 0px;">
+        <picker mode="selector" bindchange="bindPickerDelCourse" value="{{0}}" range="{{existingCourseArray}}" style="height: 30px;" disabled="{{(existingCourseArray.length === 0)? true:false}}">
+          <button style="float:right; width: 100% ; color:#fff; background-color:{{(existingCourseArray.length === 0)? 'rgba(0, 0, 255, 0.315)':'rgba(0, 0, 255, 0.692)'}}; line-height: 29px; text-align: center;" >Course (-)</button>
+        </picker>
+      </view>
+    </view>
+
+
+
+    <!-- 按钮：重置所有的数据 Reset All -->
+    <view class="weui-btn-area">
+      <view class="weui-btn weui-btn_primary" style="background-color:indianred; width: 150px; margin:0 auto; line-height: 28px;" bindtap="onResetAll">Reset All</view>
+    </view>
+    <view style="text-align: center; font-size:1.0rem;font-weight:350">
+      <text>Click to clear all your scores and results!</text>
+    </view>
+
+  </view>
+
+  <!-- 对话框: 重置确认Dialog -->
+  <view class="fadeIn" wx:if="{{isDialogResetAll}}">
+    <view class="weui-mask"></view>
+    <view class="weui-dialog">
+      <view class="weui-dialog__hd" style="padding:4% 0% 0% 0%;">
+        <icon class="icon-box-img" type="warn" size="50"></icon>
+        <!-- <strong class="weui-dialog__title">Warning</strong> -->
+        <!-- <image src="images/icon_reset_warn.png" style="height: 70px; width: 70px;"></image> -->
+      </view>
+      <view class="weui-dialog__bd" style="padding:0% 5% 0% 5%; font-weight: bold;">Are you sure to clear all your data including your input scores and caculated results?</view>
+      <view class="weui-dialog__ft" style="padding:0% 0% 0% 0%;">
+        <view class="weui-dialog__btn weui-dialog__btn_default" bindtap="onResetAllYes">YES</view>
+        <view class="weui-dialog__btn weui-dialog__btn_primary" bindtap="onResetAllNo">NO</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="page__ft" bindtap="changeTheme">
+    <view slot="footer">
+      <!-- <view class="weui-footer__links"> -->
+      <!-- <navigator url="" class="weui-footer__link">本小程序源代码(Link)</navigator> -->
+      <!-- </view> -->
+
+      <view class="weui-footer__text">Unoffical GPA Calculator for SBSS High School</view>
+      <view class="weui-footer__text">Copyright © 2022-2023 Ana 蒋韵涵</view>
+    </view>
+  </view>
+
+  <view class="weui-toptips weui-toptips_warn {{isInvalid ? 'show_toptips' : ''}}">Found invalid input(s), please double check!</view>
+
+</view>
