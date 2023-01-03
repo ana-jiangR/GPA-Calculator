@@ -1,0 +1,24 @@
+{
+  "lazyCodeLoading": "requiredComponents",
+  
+  "pages": [
+    "pages/index"
+  ],
+
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "GPA Calculator | SSBS",
+    "navigationBarBackgroundColor": "#EDEDED",
+    "backgroundColor": "#EDEDED"
+  },
+
+  "networkTimeout": {
+    "request": 10000,
+    "connectSocket": 10000,
+    "uploadFile": 10000,
+    "downloadFile": 10000
+  },
+
+  "style": "v2",
+  "debug": false
+}
