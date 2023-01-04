@@ -176,7 +176,7 @@ const DEFAULT_COURSE_INFO_DATA = {
         value: INVALID_SCORE
     }, // 0 - 100
 };
-const ALL_COURSES_ARRAY = ['Math', 'Language', 'Literature', 'AP1', 'AP2', 'Chinese', 'Elective', 'Optional'];
+const ALL_COURSES_ARRAY = ['Math', 'Language', 'Literature', 'AP1', 'AP2', 'Chinese', 'Elective', 'Optional', 'Other'];
 
 function getWeightedGPA(courseList){
 
@@ -204,6 +204,72 @@ function getWeightedGPA(courseList){
 
 }
 
+// cache course data to local storage
+function saveAllDataEx(pageData){
+    saveWeightedGPAData(pageData.weightedGPA);
+
+    for (let entry of pageData.list){
+        saveCourseData(pageData, entry.uniquename);
+    }
+}
+
+function saveWeightedGPAData(gpa){
+    try { wx.setStorageSync('weightedGPA', gpa);} catch (e) {}
+}
+
+function saveCourseData(pageData, coursename){
+    // always update GPA
+    saveWeightedGPAData(pageData.weightedGPA);
+
+    for (let entry of pageData.list){
+        if (entry.uniquename === coursename){
+            let coursedata = {};
+
+            coursedata.Level = {selected: entry.entriesx.Level.selected};
+
+            coursedata.Weight = {
+                value: entry.entriesx.Weight.value,
+                isWaring: entry.entriesx.Weight.isWaring,
+                isClearBtn: entry.entriesx.Weight.isClearBtn};
+
+            coursedata.Term = {
+                value: entry.entriesx.Term.value,
+                isWaring: entry.entriesx.Term.isWaring,
+                isClearBtn: entry.entriesx.Term.isClearBtn};
+
+            coursedata.Midterm = {
+                value: entry.entriesx.Midterm.value,
+                isWaring: entry.entriesx.Midterm.isWaring,
+                isClearBtn: entry.entriesx.Midterm.isClearBtn};
+                
+            coursedata.Final = {
+                value: entry.entriesx.Final.value,
+                isWaring: entry.entriesx.Final.isWaring,
+                isClearBtn: entry.entriesx.Final.isClearBtn};
+
+            coursedata.Overall = {
+                value: entry.entriesx.Overall.value};
+
+            coursedata.Grade = {
+                value: entry.entriesx.Grade.value};
+
+            coursedata.GPA = {value: entry.entriesx.GPA.value};   
+
+            try { wx.setStorageSync(coursename, coursedata);} catch (e) {}
+        }
+    }
+}
+
+function clearCourseData(pageData, coursename){
+    // always update GPA
+    saveWeightedGPAData(pageData.weightedGPA);
+
+    try { wx.removeStorageSync(coursename);} catch (e) {}
+}
+
+function clearAllData(){
+    try {wx.clearStorageSync();} catch (e) {}
+}
 
 Page({
     mixins: [require('../mixin/common')],
@@ -445,6 +511,8 @@ Page({
         } = e.currentTarget;
         let index = Number(id);
 
+        let coursename = list[index].uniquename;
+
         // console.log("onConfirm: id:%o, name:%o", id, list[index].uniquename);
 
 
@@ -511,6 +579,9 @@ Page({
             isInvalid: isWaring
         });
 
+        // cache data
+        saveCourseData(this.data, coursename);
+
         // only display the error message (top tip) for 3s when invlid == true
         if (isInvalid == true) {
             isInvalid = false;
@@ -533,6 +604,7 @@ Page({
             id
         } = e.currentTarget;
         let index = Number(id);
+        let coursename = list[index].uniquename;
 
         // console.log("onReset: id:%o, name:%o", id, list[index].uniquename);
 
@@ -580,6 +652,9 @@ Page({
             weightedGPA: weightedGPA.toFixed(3),
             list,
         });
+
+        // cache data
+        saveCourseData(this.data, coursename);
 
         wx.showToast({
             title: 'Done',
@@ -652,6 +727,11 @@ Page({
             list,
             weightedGPA: this.data.weightedGPA
         });
+
+        // clear all the local storage cached data.
+        clearAllData();        
+        saveAllDataEx(this.data);
+
     },
 
     onResetAllNo() {
@@ -669,8 +749,75 @@ Page({
         let {
             newCourseArray,
             existingCourseArray,
-            list
+            list,
+            weightedGPA,
         } = this.data;
+
+        // attempt to retrieve the cached GPA value, if not exists, then use default INVALID_SCORE
+        try { weightedGPA = wx.getStorageSync('weightedGPA') || INVALID_SCORE;} catch (e) {}
+
+        // attempt to retrieve the cached course data by looping all the courses
+        let hasCourseCached = false;
+        let cachedList = [];
+        for (let coursename of ALL_COURSES_ARRAY)
+        {
+            try { 
+                let courseCachedData = wx.getStorageSync(coursename);
+
+                // if no cached (return value is ''), then continue to next one
+                if (courseCachedData === '')
+                    continue;
+                else{
+                    // yeah, we have cached course data, then use cached data for initialization/onLoad
+                    hasCourseCached = true;
+
+                    // fill up this course data
+                    let courseDataObj =  {
+                        uniquename: coursename,
+                        pages: [],
+                        expand: false,
+                        // make a copy (DEEP COPY) below, otherwise, all the new added courses share the same data/memory
+                        entriesx: JSON.parse(JSON.stringify(DEFAULT_COURSE_INFO_DATA)), 
+                        iconpng: 'images/icon_nav_' + coursename + '.png'
+                    };
+                    
+                    courseDataObj.entriesx.Level.selected = courseCachedData.Level.selected;
+
+                    courseDataObj.entriesx.Weight.value    = courseCachedData.Weight.value;
+                    courseDataObj.entriesx.Weight.isWaring = courseCachedData.Weight.isWaring;
+                    courseDataObj.entriesx.Weight.isClearBtn = courseCachedData.Weight.isClearBtn;
+                    
+                    courseDataObj.entriesx.Term.value    = courseCachedData.Term.value;
+                    courseDataObj.entriesx.Term.isWaring = courseCachedData.Term.isWaring;
+                    courseDataObj.entriesx.Term.isClearBtn = courseCachedData.Term.isClearBtn;
+                    
+                    courseDataObj.entriesx.Midterm.value    = courseCachedData.Midterm.value;
+                    courseDataObj.entriesx.Midterm.isWaring = courseCachedData.Midterm.isWaring;
+                    courseDataObj.entriesx.Midterm.isClearBtn = courseCachedData.Midterm.isClearBtn;
+                    
+                    courseDataObj.entriesx.Final.value    = courseCachedData.Final.value;
+                    courseDataObj.entriesx.Final.isWaring = courseCachedData.Final.isWaring;
+                    courseDataObj.entriesx.Final.isClearBtn = courseCachedData.Final.isClearBtn;
+
+                    courseDataObj.entriesx.Overall.value    = courseCachedData.Overall.value;
+                    courseDataObj.entriesx.Grade.value    = courseCachedData.Grade.value;
+                    courseDataObj.entriesx.GPA.value    = courseCachedData.GPA.value;
+
+                    // console.log(courseDataObj);
+                    cachedList = cachedList.concat([courseDataObj]);
+
+                }
+            } catch (e) {}
+        }
+
+        // if no cached data, then save all existing default data
+        if (hasCourseCached === false) {
+            saveAllDataEx(this.data);
+        }
+        else {
+            // otherwise, update 'list' with 'cachedList'
+            list = cachedList;
+        }
 
         if (newCourseArray.length === 0 && existingCourseArray.length === 0) {
             // console.log("onLoad: update course arraries: newCourseArray/existingCourseArray");
@@ -694,10 +841,12 @@ Page({
             }
         }
 
-        console.log("onLoad:  existingCourse:%O, newCourse:%O", existingCourseArray, newCourseArray);
+        // console.log("onLoad:  existingCourse:%O, newCourse:%O", existingCourseArray, newCourseArray);
 
 
         this.setData({
+            list,
+            weightedGPA,
             newCourseArray: newCourseArray,
             existingCourseArray: existingCourseArray,
         })
@@ -754,6 +903,10 @@ Page({
             existingCourseArray: existingCourseArray,
 
         })
+
+
+        // cache data
+        saveCourseData(this.data, coursename);
 
     },
 
@@ -820,6 +973,10 @@ Page({
             existingCourseArray: existingCourseArray,
             weightedGPA: weightedGPA.toFixed(3),
         })
+
+
+        // clear cache data
+        clearCourseData(this.data, coursename);
 
     },
 
