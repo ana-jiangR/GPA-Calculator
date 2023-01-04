@@ -828,7 +828,7 @@ Page({
         return {
           title: 'SSBS|GPA计算',
           //path: 'pages/home/index',
-          imageUrl: 'images/logo_blue.png'
+          imageUrl: 'images/logo_gold.png'
         }
       },
 
@@ -836,7 +836,7 @@ Page({
     onShareTimeline(){
         return {
             title:'SSBS|GPA计算器',
-            imageUrl: 'images/logo_blue.png'
+            imageUrl: 'images/logo_gold.png'
         }
     },
 });
