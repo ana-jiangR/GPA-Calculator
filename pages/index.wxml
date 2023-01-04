@@ -182,15 +182,16 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 
+
+    <view style="text-align: center; font-size:1.0rem;font-weight:500; padding-top: 20px;">
+      <text>All the data will be only saved on your local device, and they will not be collected or shared with anyone else.</text>
+    </view>
     <!-- 按钮：重置所有的数据 Reset All -->
-    <view class="weui-btn-area">
+    <view class="weui-btn-area" style="margin-top: 30px; margin-bottom: 6px;">
       <view class="weui-btn weui-btn_primary" style="background-color:indianred; width: 150px; margin:0 auto; line-height: 28px;" bindtap="onResetAll">Reset All</view>
     </view>
     <view style="text-align: center; font-size:1.0rem;font-weight:500">
-      <text>All the data will be only saved on your local device, and they will not be collected or shared with anyone else.</text>
-    </view>
-    <view style="text-align: center; font-size:1.0rem;font-weight:500">
-      <text>You can click this button above to clear all your scores and results!</text>
+      <text>You can click this button above to delete all the data from your local device storage.</text>
     </view>
 
   </view>
