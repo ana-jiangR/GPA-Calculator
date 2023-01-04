@@ -823,4 +823,20 @@ Page({
 
     },
 
+    //  转发分享
+    onShareAppMessage() {
+        return {
+          title: 'SSBS|GPA计算',
+          //path: 'pages/home/index',
+          imageUrl: 'images/logo_blue.png'
+        }
+      },
+
+    // 转发朋友圈
+    onShareTimeline(){
+        return {
+            title:'SSBS|GPA计算器',
+            imageUrl: 'images/logo_blue.png'
+        }
+    },
 });
