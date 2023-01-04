@@ -494,6 +494,12 @@ Page({
             list[index].entriesx.Overall.value = overallScore.toFixed(2);  
             list[index].entriesx.Grade.value = getGradeByScore(overallScore);
             list[index].entriesx.GPA.value = getGPAByLevelAndScore(levelstr, overallScore).toFixed(1);
+
+            wx.showToast({
+                title: 'Success',
+                icon: 'success',
+                duration: 1000
+            });
         }
 
         // update this.data.weightedGPA
@@ -574,6 +580,12 @@ Page({
             weightedGPA: weightedGPA.toFixed(3),
             list,
         });
+
+        wx.showToast({
+            title: 'Done',
+            icon: 'success',
+            duration: 700
+        });
     },
 
     onResetAll() {
@@ -604,10 +616,16 @@ Page({
                     if (key === 'Level')
                         entries[key].selected = -1; // invalid -> empty in picker selection
 
-                    if (key === 'Weight' || key === 'Term' || key === 'Midterm' || key === 'Final') {
+                    if (key === 'Weight') {
                         entries[key].value = INVALID_SCORE;
                         entries[key].isWaring = true;
                         entries[key].isClearBtn = false;
+                    }
+
+                    if (key === 'Term' || key === 'Midterm' || key === 'Final') {
+                        entries[key].value = VALID_SCORE_ZERO;
+                        entries[key].isWaring = false;
+                        entries[key].isClearBtn = true;
                     }
 
                     if (key === 'Overall' || key === 'GPA') {
@@ -748,7 +766,8 @@ Page({
         let {
             newCourseArray,
             existingCourseArray,
-            list
+            list,
+            weightedGPA,
         } = this.data;
 
         let coursename = existingCourseArray[index];
@@ -790,10 +809,16 @@ Page({
         // console.log(existingCourseArray);
 
 
+        // update this.data.weightedGPA since since this course's data is cleared
+        // TODO: 优化方法 - 如果删除的课程的GPA值是无效的(INVALID_SCORE), 则没有必要更新 weightedGPA
+        weightedGPA = getWeightedGPA(this.data.list);
+
+
         this.setData({
             list: this.data.list,
             newCourseArray: newCourseArray,
             existingCourseArray: existingCourseArray,
+            weightedGPA: weightedGPA.toFixed(3),
         })
 
     },
