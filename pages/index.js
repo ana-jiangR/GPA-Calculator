@@ -271,13 +271,64 @@ function clearAllData(){
     try {wx.clearStorageSync();} catch (e) {}
 }
 
+// get weightedGPA and all course results including the specified course's Overall/Grade/GPA values
+function updateWeightedGPAandCourseResults(pageData, courseEntry){
+    let LevelValue = courseEntry.Level.selected;
+    let isLevelValid = (LevelValue >= 0 && LevelValue < COURSE_LEVEL_ARRAY.length) ? true : false;
+
+    // 检查是否有非法的输入数值（scores）
+    let isInvalid = !isLevelValid ||
+        courseEntry.Weight.isWaring ||
+        courseEntry.Term.isWaring ||
+        courseEntry.Midterm.isWaring ||
+        courseEntry.Final.isWaring;
+
+    if (isInvalid) {
+        // so, the input(s) is invalid, then clear the overall/grade/gpa values (to default)
+        courseEntry.Overall.value = INVALID_SCORE;
+        courseEntry.Grade.value = '';
+        courseEntry.GPA.value = INVALID_SCORE;
+    } else {
+        let levelstr = COURSE_LEVEL_ARRAY[LevelValue];
+
+        let term = Number(courseEntry.Term.value),
+            midTerm = Number(courseEntry.Midterm.value),
+            final   = Number(courseEntry.Final.value);    
+        // weighted score [0 ... 100]                
+        let wscore = 0.3 * term +
+                     0.3 * midTerm +
+                     0.4 * final;  
+        // [0,0.3,0.4,0.6,0.7,1.0]
+        let wcred  = (term    === 0? 0:0.3) + 
+                     (midTerm === 0? 0:0.3) +
+                     (final   === 0? 0:0.4);
+        
+        let overallScore = (wcred === 0) ? INVALID_SCORE: wscore/wcred;
+
+        // Warning: toFixed() is a string, NOT a Number
+        courseEntry.Overall.value = overallScore.toFixed(2);  
+        courseEntry.Grade.value = getGradeByScore(overallScore);
+        courseEntry.GPA.value = getGPAByLevelAndScore(levelstr, overallScore).toFixed(1);
+    }
+
+    pageData.weightedGPA = getWeightedGPA(pageData.list);
+
+
+    return {
+        WGPA: getWeightedGPA(pageData.list),
+        Overall:courseEntry.Overall.value,
+        Grade:courseEntry.Grade.value,
+        GPA:courseEntry.GPA.value
+    };
+}
+
 Page({
     mixins: [require('../mixin/common')],
 
 
 
     data: {
-        isInvalid: false,
+        // isInvalid: false,
         isDialogResetAll: false,
         weightedGPA: INVALID_SCORE,
         levelarray: COURSE_LEVEL_ARRAY,
@@ -365,9 +416,16 @@ Page({
         // update selected value for this picker operation
         list[index].entriesx.Level.selected = e.detail.value;
 
+        // update all results
+        updateWeightedGPAandCourseResults(this.data, list[index].entriesx);
+
         this.setData({
             list,
+            weightedGPA: this.data.weightedGPA.toFixed(3)
         });
+
+        // cache the new course data
+        saveCourseData(this.data,list[index].uniquename);
     },
 
 
@@ -425,24 +483,20 @@ Page({
             }
             list[index].entriesx[iname].isClearBtn = isClear;
 
+            // update all results            
+            updateWeightedGPAandCourseResults(this.data, list[index].entriesx);
 
-            // also clear these below
-            list[index].entriesx.Overall.value = INVALID_SCORE;
-            list[index].entriesx.Grade.value = '';
-            list[index].entriesx.GPA.value = INVALID_SCORE;
-
-            // since this course's GPA is cleared, so update the total weighted GPA too.
-            weightedGPA = getWeightedGPA(this.data.list);
-
-            // console.log("onInput: %o", list[index].entriesx[iname].value);
 
             this.setData({
                 [list[index].entriesx[iname].value]: value,
                 [list[index].entriesx[iname].isWaring]: invalid,
                 [list[index].entriesx[iname].isClearBtn]: isClear,
                 list,
-                weightedGPA: weightedGPA.toFixed(3),
+                weightedGPA: this.data.weightedGPA.toFixed(3),
             });
+
+            // cache the new course data
+            saveCourseData(this.data,list[index].uniquename);
         }
     },
 
@@ -452,7 +506,6 @@ Page({
 
         let {
             list,
-            weightedGPA
         } = this.data;
 
         const {
@@ -473,20 +526,17 @@ Page({
             list[index].entriesx[iname].isClearBtn = false;
             list[index].entriesx[iname].isWaring = true;
 
-            // also clear these below
-            list[index].entriesx.Overall.value = INVALID_SCORE;
-            list[index].entriesx.Grade.value = '';
-            list[index].entriesx.GPA.value = INVALID_SCORE;
-
-            // since this course's GPA is cleared, so update the total weighted GPA too.
-            weightedGPA = getWeightedGPA(this.data.list);
+            // update all results
+            updateWeightedGPAandCourseResults(this.data, list[index].entriesx);
 
             this.setData({
                 // [list[index].entriesx[iname].value]: INVALID_SCORE, FIXMED - Weird, doesn't work????
                 list,
-                weightedGPA: weightedGPA.toFixed(3),
+                weightedGPA: this.data.weightedGPA.toFixed(3),
             });
 
+            // cache the new course data
+            saveCourseData(this.data,list[index].uniquename);
         }
     },
 
@@ -497,101 +547,102 @@ Page({
         getApp().themeChanged(this.data.theme === 'light' ? 'dark' : 'light');
     },
 
-    // 检查错误，或者计算结果
-    onConfirm(e) {
-        let {
-            list,
-            isInvalid,
-            levelarray,
-            weightedGPA,
-        } = this.data;
+    // 检查错误，或者计算结果 
+    // - to be -removed -
+    // onConfirm(e) {
+    //     let {
+    //         list,
+    //         isInvalid,
+    //         levelarray,
+    //         weightedGPA,
+    //     } = this.data;
 
-        const {
-            id
-        } = e.currentTarget;
-        let index = Number(id);
+    //     const {
+    //         id
+    //     } = e.currentTarget;
+    //     let index = Number(id);
 
-        let coursename = list[index].uniquename;
+    //     let coursename = list[index].uniquename;
 
-        // console.log("onConfirm: id:%o, name:%o", id, list[index].uniquename);
-
-
-        let LevelValue = list[index].entriesx.Level.selected;
-        let isLevelValid = (LevelValue >= 0 && LevelValue < levelarray.length) ? true : false;
-
-        // 检查是否有非法的输入数值（scores）
-        let isWaring = !isLevelValid ||
-            list[index].entriesx.Weight.isWaring ||
-            list[index].entriesx.Term.isWaring ||
-            list[index].entriesx.Midterm.isWaring ||
-            list[index].entriesx.Final.isWaring;
-
-        isInvalid = isWaring;
+    //     // console.log("onConfirm: id:%o, name:%o", id, list[index].uniquename);
 
 
-        if (isInvalid) {
-            // so, the input(s) is invalid, then clear the overall/grade/gpa values (to default)
-            list[index].entriesx.Overall.value = INVALID_SCORE;
-            list[index].entriesx.Grade.value = '';
-            list[index].entriesx.GPA.value = INVALID_SCORE;
+    //     let LevelValue = list[index].entriesx.Level.selected;
+    //     let isLevelValid = (LevelValue >= 0 && LevelValue < levelarray.length) ? true : false;
 
-        } else {
-            // WIP:
-            let levelstr = levelarray[LevelValue];
+    //     // 检查是否有非法的输入数值（scores）
+    //     let isWaring = !isLevelValid ||
+    //         list[index].entriesx.Weight.isWaring ||
+    //         list[index].entriesx.Term.isWaring ||
+    //         list[index].entriesx.Midterm.isWaring ||
+    //         list[index].entriesx.Final.isWaring;
 
-            let term = Number(list[index].entriesx.Term.value),
-                midTerm = Number(list[index].entriesx.Midterm.value),
-                final   = Number(list[index].entriesx.Final.value);    
-            // weighted score [0 ... 100]                
-            let wscore = 0.3 * term +
-                         0.3 * midTerm +
-                         0.4 * final;  
-                // [0,1,2,3]
-            let wcred  = (term    === 0? 0:0.3) + 
-                         (midTerm === 0? 0:0.3) +
-                         (final   === 0? 0:0.4);
+    //     isInvalid = isWaring;
+
+
+    //     if (isInvalid) {
+    //         // so, the input(s) is invalid, then clear the overall/grade/gpa values (to default)
+    //         list[index].entriesx.Overall.value = INVALID_SCORE;
+    //         list[index].entriesx.Grade.value = '';
+    //         list[index].entriesx.GPA.value = INVALID_SCORE;
+
+    //     } else {
+    //         // WIP:
+    //         let levelstr = levelarray[LevelValue];
+
+    //         let term = Number(list[index].entriesx.Term.value),
+    //             midTerm = Number(list[index].entriesx.Midterm.value),
+    //             final   = Number(list[index].entriesx.Final.value);    
+    //         // weighted score [0 ... 100]                
+    //         let wscore = 0.3 * term +
+    //                      0.3 * midTerm +
+    //                      0.4 * final;  
+    //             // [0,1,2,3]
+    //         let wcred  = (term    === 0? 0:0.3) + 
+    //                      (midTerm === 0? 0:0.3) +
+    //                      (final   === 0? 0:0.4);
             
-            let overallScore = (wcred === 0) ? INVALID_SCORE: wscore/wcred;
+    //         let overallScore = (wcred === 0) ? INVALID_SCORE: wscore/wcred;
 
-            // console.log(wscore, wcred, term, midTerm, final, 
-            //   overallScore, 
-            //   getGradeByScore(overallScore),
-            //   getGPAByLevelAndScore(levelstr, overallScore));
+    //         // console.log(wscore, wcred, term, midTerm, final, 
+    //         //   overallScore, 
+    //         //   getGradeByScore(overallScore),
+    //         //   getGPAByLevelAndScore(levelstr, overallScore));
 
-            // Warn: toFixed() is a string, rather than a Number
-            list[index].entriesx.Overall.value = overallScore.toFixed(2);  
-            list[index].entriesx.Grade.value = getGradeByScore(overallScore);
-            list[index].entriesx.GPA.value = getGPAByLevelAndScore(levelstr, overallScore).toFixed(1);
+    //         // Warn: toFixed() is a string, rather than a Number
+    //         list[index].entriesx.Overall.value = overallScore.toFixed(2);  
+    //         list[index].entriesx.Grade.value = getGradeByScore(overallScore);
+    //         list[index].entriesx.GPA.value = getGPAByLevelAndScore(levelstr, overallScore).toFixed(1);
 
-            wx.showToast({
-                title: 'Success',
-                icon: 'success',
-                duration: 1000
-            });
-        }
+    //         wx.showToast({
+    //             title: 'Success',
+    //             icon: 'success',
+    //             duration: 1000
+    //         });
+    //     }
 
-        // update this.data.weightedGPA
-        weightedGPA = getWeightedGPA(this.data.list);
+    //     // update this.data.weightedGPA
+    //     weightedGPA = getWeightedGPA(this.data.list);
 
-        this.setData({
-            list,
-            weightedGPA: weightedGPA.toFixed(3),
-            isInvalid: isWaring
-        });
+    //     this.setData({
+    //         list,
+    //         weightedGPA: weightedGPA.toFixed(3),
+    //         isInvalid: isWaring
+    //     });
 
-        // cache data
-        saveCourseData(this.data, coursename);
+    //     // cache data
+    //     saveCourseData(this.data, coursename);
 
-        // only display the error message (top tip) for 3s when invlid == true
-        if (isInvalid == true) {
-            isInvalid = false;
-            setTimeout(() => {
-                this.setData({
-                    isInvalid: false,
-                });
-            }, 5000);
-        }
-    },
+    //     // only display the error message (top tip) for 3s when invlid == true
+    //     if (isInvalid == true) {
+    //         isInvalid = false;
+    //         setTimeout(() => {
+    //             this.setData({
+    //                 isInvalid: false,
+    //             });
+    //         }, 5000);
+    //     }
+    // },
 
 
     onReset(e) {
@@ -720,10 +771,10 @@ Page({
 
         this.data.weightedGPA = INVALID_SCORE;
 
-        // suppress this dialog
+        
         this.setData({
-            isDialogResetAll: false,
-            isInvalid: false,
+            isDialogResetAll: false,  // suppress this dialog
+            // isInvalid: false,
             list,
             weightedGPA: this.data.weightedGPA
         });
