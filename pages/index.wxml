@@ -27,7 +27,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   <!-- </view> -->
 
   <view class="page__bd page__bd_spacing">
-    <view class="page__title" style="text-align: center; font-weight: 700; color: rgba(0, 0, 205, 0.692); font-size: x-large; padding-bottom: 5px;">Your weighted GPA is: {{weightedGPA == -100? 'N/A': weightedGPA}} </view>
+    <!-- <view class="page__title" style="text-align: center; font-weight: 700; color: rgba(0, 0, 205, 0.692); font-size: x-large; padding-bottom: 5px;">Your weighted GPA is: {{weightedGPA == -100? 'N/A': weightedGPA}} </view> -->
+    <view class="page__title" style="text-align: center; font-weight: 700; color: rgba(0, 0, 205, 0.692); font-size:large; padding-bottom: 0px;">Your weighted GPA</view>
+    <view class="page__title" style="text-align: center; font-weight: 700; color: rgba(0, 0, 205, 0.692); font-size: x-large; padding-bottom: 0px;padding-top: 0px;">{{weightedGPA == -100? 'N/A': weightedGPA}} </view>
+
     <view class="kind-list">
       <block wx:for="{{list}}" wx:key="uniquename" wx:for-index="index" wx:for-item="item">
         <view class="kind-list__item">
@@ -149,9 +152,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
               <!-- 确认提交和重置按钮 -->
               <!-- <view class="weui-form__opr-area"> -->
-              <view style="display: flex; flex-direction: row; margin-top:5rpx; margin-bottom: 17rpx;">
-                <button class="weui-btn_primary" id="{{index}}" style="float: left; width: 45% ; color:#fff;" bindtap="onConfirm">Update</button>
-                <button class="weui-btn_default" id="{{index}}" style="float: right;width: 45% ;" bindtap="onReset">Reset</button>
+              <view style="display: flex; flex-direction: row; margin-top:4rpx; margin-bottom: 17rpx;">
+                <!-- <button class="weui-btn_primary" id="{{index}}" style="float: left; width: 45% ; color:#fff;" bindtap="onConfirm">Update</button> -->
+                <button class="weui-btn_primary" id="{{index}}" style="width: 30% ; color:#fff;background-color:indianred;" bindtap="onReset">Reset</button>
               </view>
               <!-- </view> -->
 
@@ -193,7 +196,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <view style="text-align: center; font-size:1.0rem;font-weight:500">
       <text>You can click this button above to delete all the data from your local device storage.</text>
     </view>
-
   </view>
 
   <!-- 对话框: 重置确认Dialog -->
@@ -224,6 +226,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     </view>
   </view>
 
-  <view class="weui-toptips weui-toptips_warn {{isInvalid ? 'show_toptips' : ''}}">Found invalid input(s), please double check!</view>
+  <!-- <view class="weui-toptips weui-toptips_warn {{isInvalid ? 'show_toptips' : ''}}">Found invalid input(s), please double check!</view> -->
 
 </view>
