@@ -1,0 +1,153 @@
+<!-- 
+The MIT License (MIT)
+Copyright © 2022-2023 Yunhan Jiang (Ana)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
+associated documentation files (the “Software”), to deal in the Software without restriction, including 
+without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the 
+following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or 
+substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT 
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+-->
+
+
+<page-meta root-font-size="system"></page-meta>
+
+<view class="page" data-weui-theme="{{theme}}" data-weui-mode="{{mode}}">
+	<!-- <view class="page__hd" style="padding-left: 10px;padding-right: 10px; padding-bottom: 15px;padding-top: 5px;"> -->
+	<!-- <view class="page__title" style="text-align: center">This miniprogram caculates your GPA based on your inputs of each course.</view> -->
+	<!-- </view> -->
+
+	<view class="page__bd page__bd_spacing">
+		<view class="page__title" style="text-align: center; font-weight: 700; color: rgba(0, 0, 205, 0.692); font-size:x-large; padding-bottom: 0px;">ABOUT</view>
+
+		<view class="kind-list">
+			<view class="kind-list__item">
+				<view id="0" class="weui-flex kind-list__item-hd {{list[0].expand ? 'kind-list__item-hd_show' : ''}}" bindtap="aboutToggle">
+					<view class="weui-flex__item" style="font-size: large; font-weight: bold;">{{list[0].title}}</view>
+					<image class="kind-list__img" src="../images/icon_nav_Elective.png"></image>
+				</view>
+
+				<view class="kind-list__item-bd {{list[0].expand ? 'kind-list__item-bd_show' : ''}}">
+					<view class="weui-cells {{list[0].expand ? 'weui-cells_show' : ''}}">
+						<view class="weui-cells__group weui-cells__group_form">
+							<view class="weui-cell weui-cell_active">
+								<text>An unofficial SSBS-HS GPA Calculator.\n This miniprogram calculates your GPA based on your inputs of each course.</text>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<view class="kind-list">
+			<view class="kind-list__item">
+				<view id="1" class="weui-flex kind-list__item-hd {{list[1].expand ? 'kind-list__item-hd_show' : ''}}" bindtap="aboutToggle">
+					<view class="weui-flex__item" style="font-size: large; font-weight: bold;">{{list[1].title}}</view>
+					<image class="kind-list__img" src="../images/icon_nav_Elective.png"></image>
+				</view>
+
+				<view class="kind-list__item-bd {{list[1].expand ? 'kind-list__item-bd_show' : ''}}">
+					<view class="weui-cells {{list[1].expand ? 'weui-cells_show' : ''}}">
+						<view class="weui-cells__group weui-cells__group_form">
+							<view class="weui-cell weui-cell_active">
+								<text>- Input valid level, weight and scores of each course into the blank. Your GPA will be calculated automatically.\n \n - Add/delete courses by clicking the button “Course(+)” and “Course(-)”.\n \n- Reset the inputs of all the courses by clicking the button “Reset All”. All your input and results are saved on your local device until you click this button.\n \n*Caution: It’s ok if you don’t know some scores (Eg. You don’t know your exact term score). Just input 0. It is valid, and it won’t affect the GPA calculation. </text>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<view class="kind-list">
+			<view class="kind-list__item">
+				<view id="2" class="weui-flex kind-list__item-hd {{list[2].expand ? 'kind-list__item-hd_show' : ''}}" bindtap="aboutToggle">
+					<view class="weui-flex__item" style="font-size: large; font-weight: bold;">{{list[2].title}}</view>
+					<image class="kind-list__img" src="../images/icon_nav_Elective.png"></image>
+				</view>
+
+				<view class="kind-list__item-bd {{list[2].expand ? 'kind-list__item-bd_show' : ''}}">
+					<view class="weui-cells {{list[2].expand ? 'weui-cells_show' : ''}}">
+						<view class="weui-cells__group weui-cells__group_form">
+							<view class="weui-cell weui-cell_active">
+								<text>The website version of this miniprogram for PC users:\n https://gpa.ssbs.club/
+								</text>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<view class="kind-list">
+			<view class="kind-list__item">
+				<view id="3" class="weui-flex kind-list__item-hd {{list[3].expand ? 'kind-list__item-hd_show' : ''}}" bindtap="aboutToggle">
+					<view class="weui-flex__item" style="font-size: large; font-weight: bold;">{{list[3].title}}</view>
+					<image class="kind-list__img" src="../images/icon_nav_Elective.png"></image>
+				</view>
+
+				<view class="kind-list__item-bd {{list[3].expand ? 'kind-list__item-bd_show' : ''}}">
+					<view class="weui-cells {{list[3].expand ? 'weui-cells_show' : ''}}">
+						<view class="weui-cells__group weui-cells__group_form">
+							<view class="weui-cell weui-cell_active">
+								<text>The GPA calculation process is detailed in:\n https://github.com/JettChenT/GPA \n \n In addition, the calculation algorithm of this miniprogram has reference from this repository.\n Thanks a lot to the contributor of it :D!
+								</text>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<view class="kind-list">
+			<view class="kind-list__item">
+				<view id="4" class="weui-flex kind-list__item-hd {{list[4].expand ? 'kind-list__item-hd_show' : ''}}" bindtap="aboutToggle">
+					<view class="weui-flex__item" style="font-size: large; font-weight: bold;">{{list[4].title}}</view>
+					<image class="kind-list__img" src="../images/icon_nav_Elective.png"></image>
+				</view>
+
+				<view class="kind-list__item-bd {{list[4].expand ? 'kind-list__item-bd_show' : ''}}">
+					<view class="weui-cells {{list[4].expand ? 'weui-cells_show' : ''}}">
+						<view class="weui-cells__group weui-cells__group_form">
+							<view class="weui-cell weui-cell_active">
+								<text>If you have any suggestions and issues, please contact me by WeChat or email: \n WeChat ID: Ajsyn-bnsi \n Email: ana.jiang@qq.com</text>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<!-- <view class="kind-list">
+			<view class="kind-list__item">
+				<view id="5" class="weui-flex kind-list__item-hd {{list[5].expand ? 'kind-list__item-hd_show' : ''}}" bindtap="aboutToggle">
+					<view class="weui-flex__item" style="font-size: large; font-weight: bold;">{{list[5].title}}</view>
+					<image class="kind-list__img" src="../images/icon_nav_Elective.png"></image>
+				</view>
+
+				<view class="kind-list__item-bd {{list[5].expand ? 'kind-list__item-bd_show' : ''}}">
+					<view class="weui-cells {{list[5].expand ? 'weui-cells_show' : ''}}">
+						<view class="weui-cells__group weui-cells__group_form">
+							<view class="weui-cell weui-cell_active">
+								<text>asdf</text>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view> -->
+
+
+	</view>
+
+
+
+</view>
