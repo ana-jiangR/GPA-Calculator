@@ -39,7 +39,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             <view class="weui-flex__item" style="font-weight: bold;">{{"Grade: "}}{{item.entriesx.Grade.value === '' ? 'N/A': item.entriesx.Grade.value}}</view>
             <view class="weui-flex__item" style="font-weight: bold;">{{"GPA: "}}{{item.entriesx.GPA.value == -100 ? 'N/A': item.entriesx.GPA.value}}</view>
             <!-- <view class="weui-flex__item" >{{index}}</view> -->
-            <image class="kind-list__img" src="{{item.iconpng}}"></image>
+            <image class="kind-list__img" src="images/icon_nav_Math.png"></image>
           </view>
 
           <view class="kind-list__item-bd {{item.expand ? 'kind-list__item-bd_show' : ''}}">
@@ -140,13 +140,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                     </view>
                   </view>
 
-                  <!-- 显示Grade Level和 GPA分数 (上面bar上已经显示了) -->
-                  <!-- <view class="weui-flex kind-list__item-hd" style="padding-left: 17px"> -->
-                  <!-- <view class="weui-flex__item" style="font-weight: bold;">{{item.entriesx.Grade.name}}: {{item.entriesx.Grade.value === '' ? 'N/A': item.entriesx.Grade.value}}</view> -->
-                  <!-- <view class="weui-flex__item" style="font-weight: bold;">{{item.entriesx.GPA.name}}: {{item.entriesx.GPA.value == -100 ? 'N/A': item.entriesx.GPA.value}}</view> -->
-                  <!-- </view> -->
-
-
                 </view>
               </view>
 
@@ -187,14 +180,12 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
     <view style="text-align: center; font-size:1.0rem;font-weight:500; padding-top: 20px;">
-      <text>All the data will be only saved on your local device, and they will not be collected or shared with anyone else.</text>
+      <text>All the data will be only saved on your local device. They will not be collected or shared with anyone else.</text>
     </view>
+
     <!-- 按钮：重置所有的数据 Reset All -->
     <view class="weui-btn-area" style="margin-top: 30px; margin-bottom: 6px;">
       <view class="weui-btn weui-btn_primary" style="background-color:indianred; width: 150px; margin:0 auto; line-height: 28px;" bindtap="onResetAll">Reset All</view>
-    </view>
-    <view style="text-align: center; font-size:1.0rem;font-weight:500">
-      <text>You can click this button above to delete all the data from your local device storage.</text>
     </view>
   </view>
 
@@ -207,7 +198,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         <!-- <strong class="weui-dialog__title">Warning</strong> -->
         <!-- <image src="images/icon_reset_warn.png" style="height: 70px; width: 70px;"></image> -->
       </view>
-      <view class="weui-dialog__bd" style="padding:0% 5% 0% 5%; font-weight: bold;">Are you sure to clear all your data including your input scores and caculated results?</view>
+      <view class="weui-dialog__bd" style="padding:0% 5% 0% 5%; font-weight: bold;">Are you sure to clear all your data (input scores and results) in your local storage?</view>
       <view class="weui-dialog__ft" style="padding:0% 0% 0% 0%;">
         <view class="weui-dialog__btn weui-dialog__btn_default" bindtap="onResetAllYes">YES</view>
         <view class="weui-dialog__btn weui-dialog__btn_primary" bindtap="onResetAllNo">NO</view>
@@ -221,11 +212,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <!-- <navigator url="" class="weui-footer__link">本小程序源代码(Link)</navigator> -->
       <!-- </view> -->
 
-      <view class="weui-footer__text">Unoffical GPA Calculator for SBSS High School</view>
+      <view class="weui-footer__text">Unoffical GPA Calculator for SSBS High School</view>
       <view class="weui-footer__text">Copyright © 2022-2023 Ana 蒋韵涵</view>
     </view>
   </view>
-
-  <!-- <view class="weui-toptips weui-toptips_warn {{isInvalid ? 'show_toptips' : ''}}">Found invalid input(s), please double check!</view> -->
 
 </view>

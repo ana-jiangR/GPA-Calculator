@@ -176,7 +176,8 @@ const DEFAULT_COURSE_INFO_DATA = {
         value: INVALID_SCORE
     }, // 0 - 100
 };
-const ALL_COURSES_ARRAY = ['Math', 'Language', 'Literature', 'AP1', 'AP2', 'Chinese', 'Elective', 'Optional', 'Other'];
+const ALL_COURSES_ARRAY = ['Math', 'Language', 'Literature', 'AP1', 'AP2', 'Chinese', 'Elective', 'Optional', 
+                           'Geography', 'History', 'Civic Edu', 'Art', 'PE'];
 
 function getWeightedGPA(courseList){
 
