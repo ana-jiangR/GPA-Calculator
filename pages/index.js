@@ -343,30 +343,27 @@ Page({
                 pages: [],
 
                 entriesx: DEFAULT_COURSE_INFO_DATA,
-                iconpng: "images/icon_nav_Math.png",
+                iconpng: "images/Courses/Math_Icon.png",
 
             },
-
-            {
-                uniquename: 'Elective',
-                expand: false,
-                pages: [],
-
-                entriesx: DEFAULT_COURSE_INFO_DATA,
-                iconpng: 'images/icon_nav_Elective.png',
-
-            },
-
             {
                 uniquename: 'Chinese',
                 expand: false,
                 pages: [],
 
                 entriesx: DEFAULT_COURSE_INFO_DATA,
-                iconpng: 'images/icon_nav_Chinese.png',
+                iconpng: 'images/Courses/Chinese_Icon.png',
 
             },
+            {
+                uniquename: 'Elective',
+                expand: false,
+                pages: [],
 
+                entriesx: DEFAULT_COURSE_INFO_DATA,
+                iconpng: 'images/Courses/Elective_Icon.png',
+
+            },
         ],
     },
     kindToggle(e) {
@@ -829,7 +826,7 @@ Page({
                         expand: false,
                         // make a copy (DEEP COPY) below, otherwise, all the new added courses share the same data/memory
                         entriesx: JSON.parse(JSON.stringify(DEFAULT_COURSE_INFO_DATA)), 
-                        iconpng: 'images/icon_nav_' + coursename + '.png'
+                        iconpng: 'images/Courses/' + coursename + '_Icon.png'
                     };
                     
                     courseDataObj.entriesx.Level.selected = courseCachedData.Level.selected;
@@ -935,7 +932,7 @@ Page({
             pages: [],
             expand: false,
             entriesx: deepCopyData,
-            iconpng: 'images/icon_nav_' + coursename + '.png'
+            iconpng: 'images/Courses/' + coursename + '_Icon.png'
         };
 
         this.data.list = this.data.list.concat([newcourse]);
