@@ -98,7 +98,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					<view class="weui-cells {{list[3].expand ? 'weui-cells_show' : ''}}">
 						<view class="weui-cells__group weui-cells__group_form">
 							<view class="weui-cell weui-cell_active">
-								<text user-select="true">The GPA calculation process is detailed in:\n https://github.com/ana-jiangR/GPA-Calculator \n  https://github.com/JettChenT/GPA \n \n In addition, the calculation algorithm of this miniprogram has reference from the second repository.\n Thanks a lot to the contributor of it :D!
+								<text user-select="true">The GPA calculation process is detailed in:\n https://github.com/ana-jiangR/GPA-Calculator \n https://github.com/JettChenT/GPA \n \n In addition, the calculation algorithm of this miniprogram has reference from the second repository.\n Thanks a lot to the contributor of it :D!
 								</text>
 							</view>
 						</view>
@@ -126,7 +126,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</view>
 		</view>
 
-		<!-- <view class="kind-list">
+		<view class="kind-list">
 			<view class="kind-list__item">
 				<view id="5" class="weui-flex kind-list__item-hd {{list[5].expand ? 'kind-list__item-hd_show' : ''}}" bindtap="aboutToggle">
 					<view class="weui-flex__item" style="font-size: large; font-weight: bold;">{{list[5].title}}</view>
@@ -137,13 +137,15 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					<view class="weui-cells {{list[5].expand ? 'weui-cells_show' : ''}}">
 						<view class="weui-cells__group weui-cells__group_form">
 							<view class="weui-cell weui-cell_active">
-								<text>asdf</text>
+								<text>Current Version: 1.3.0 \n \n 1.3.0: 2024-11-13 \n Add 'PreAP' Level & Version History. \n \n 1.2.5: 2023-09-29 \n Add Contact Info.</text>
+
 							</view>
+
 						</view>
 					</view>
 				</view>
 			</view>
-		</view> -->
+		</view>
 
 
 	</view>

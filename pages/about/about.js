@@ -41,7 +41,7 @@ Page({
         },
         {
             title: 'Version History',
-            expand: false,
+            expand: true,
             pages: [],
 
             iconpng: 'images/icon_nav_Chinese.png',
