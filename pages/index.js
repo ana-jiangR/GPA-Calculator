@@ -24,8 +24,9 @@ const VALID_SCORE_ZERO = 0;
 // HonorMinus = 'H-',
 // Honor = 'H',
 // AdvancedHonor = 'AH',
+// PreAP = 'PreAP',
 // AP = 'AP'
-const COURSE_LEVEL_ARRAY = ['S', 'H-', 'H', 'AH', 'AP'];
+const COURSE_LEVEL_ARRAY = ['S', 'H-', 'H', 'AH', 'PreAP', 'AP'];
 
 function validLevel(level) {
     let valid = false;
@@ -68,6 +69,7 @@ const COURSE_GPA_BY_LEVEL_AND_GRADE = {
                                 'H-': [4.3, 4.3, 4.0, 3.6, 3.3, 3.0, 2.3, 1.7, 0],
                                 'H':  [4.5, 4.5, 4.2, 3.8, 3.5, 3.2, 2.5, 1.9, 0],
                                 'AH': [4.7, 4.7, 4.4, 4.0, 3.7, 3.4, 2.7, 2.1, 0],
+                                'PreAP': [4.8, 4.8, 4.5, 4.1, 3.8, 3.5, 2.8, 2.2, 0],
                                 'AP': [5.0, 5.0, 4.7, 4.3, 4.0, 3.7, 3.0, 2.4, 0]
                             };
 

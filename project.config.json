@@ -1,7 +1,7 @@
 {
     "appid": "wxca9c9a7a591c3032",
     "compileType": "miniprogram",
-    "libVersion": "2.29.0",
+    "libVersion": "3.6.4",
     "packOptions": {
         "ignore": [],
         "include": []
@@ -18,12 +18,14 @@
             "ignore": [],
             "disablePlugins": [],
             "outputPath": ""
-        }
+        },
+        "ignoreUploadUnusedFiles": true
     },
     "condition": {},
     "editorSetting": {
         "tabIndent": "insertSpaces",
         "tabSize": 4
     },
-    "simulatorPluginLibVersion": {}
+    "simulatorPluginLibVersion": {},
+    "projectname": "GPA-Calculator-SSBS"
 }
