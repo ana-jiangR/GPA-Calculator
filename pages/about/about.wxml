@@ -118,7 +118,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					<view class="weui-cells {{list[4].expand ? 'weui-cells_show' : ''}}">
 						<view class="weui-cells__group weui-cells__group_form">
 							<view class="weui-cell weui-cell_active">
-								<text user-select="true">If you have any suggestions and issues, please contact me by WeChat or email: \n \n Name: Ana 蒋韵涵 11-3 \n WeChat ID: Ajsyn-bnsi \n Email: ana.jiang@qq.com</text>
+								<text user-select="true">If you have any suggestions and issues, please contact me by WeChat or email: \n \n Name: Ana 蒋韵涵 (Class of 2025) \n WeChat ID: Ajsyn-bnsi \n Email: ana.jiang@qq.com</text>
 							</view>
 						</view>
 					</view>
