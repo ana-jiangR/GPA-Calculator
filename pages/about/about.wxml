@@ -137,7 +137,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					<view class="weui-cells {{list[5].expand ? 'weui-cells_show' : ''}}">
 						<view class="weui-cells__group weui-cells__group_form">
 							<view class="weui-cell weui-cell_active">
-								<text>Current Version: 1.3.1\n\n1.3.1: 2026-10-25\nAdd maintenance status, open source contribution information, and GitHub/WeChat copy buttons. Update the home page layout and fix the missing home page configuration.\n\n1.3.0: 2024-11-13\nAdd 'PreAP' Level and Version History.\n\n1.2.5: 2023-09-29\nAdd Contact Info.</text>
+								<text>Current Version: 1.3.2\n\n1.3.2: 2026-10-25\nUpdate maintenance and open source information, add GitHub/WeChat copy buttons, improve the home and About pages, and fix page loading issues.\n\n1.3.1: 2024-11-17\nUpdate information.\n\n1.3.0: 2024-11-13\nAdd 'PreAP' Level and Version History.\n\n1.2.5: 2023-09-29\nAdd Contact Info.</text>
 
 							</view>
 
