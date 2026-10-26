@@ -21,7 +21,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <page-meta root-font-size="system"></page-meta>
 
-<view class="page" data-weui-theme="{{theme}}" data-weui-mode="{{mode}}">
+<view class="page {{theme === 'dark' ? 'page_dark' : ''}}" data-weui-theme="{{theme}}" data-weui-mode="{{mode}}">
   <!-- <view class="page__hd" style="padding-left: 10px;padding-right: 10px; padding-bottom: 15px;padding-top: 5px;"> -->
     <!-- <view class="page__title" style="text-align: center">This miniprogram caculates your GPA based on your inputs of each course.</view> -->
   <!-- </view> -->
@@ -184,8 +184,23 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     </view>
 
     <!-- 按钮：重置所有的数据 Reset All -->
-    <view class="weui-btn-area" style="margin-top: 30px; margin-bottom: 6px;">
+    <view class="weui-btn-area reset-all-area">
       <view class="weui-btn weui-btn_primary" style="background-color:indianred; width: 150px; margin:0 auto; line-height: 28px;" bindtap="onResetAll">Reset All</view>
+    </view>
+
+    <view class="project-notice">
+      <view class="project-notice__title">Maintenance and Open Source</view>
+      <view class="project-notice__body">I'm no longer actively maintaining this mini program. The code is open source on GitHub, and Pull Requests are welcome. You can also contact me on WeChat.</view>
+      <view class="project-notice__contact">
+        <text class="project-notice__label">GitHub</text>
+        <text class="project-notice__detail" user-select="true">ana-jiangR/GPA-Calculator</text>
+        <button class="project-notice__button" size="mini" data-value="{{repositoryUrl}}" bindtap="copyNoticeInfo" aria-label="Copy GitHub link">Copy</button>
+      </view>
+      <view class="project-notice__contact">
+        <text class="project-notice__label">WeChat</text>
+        <text class="project-notice__detail" user-select="true">{{wechatId}}</text>
+        <button class="project-notice__button" size="mini" data-value="{{wechatId}}" bindtap="copyNoticeInfo" aria-label="Copy WeChat ID">Copy</button>
+      </view>
     </view>
   </view>
 

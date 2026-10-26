@@ -21,7 +21,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <page-meta root-font-size="system"></page-meta>
 
-<view class="page" data-weui-theme="{{theme}}" data-weui-mode="{{mode}}">
+<view class="page {{theme === 'dark' ? 'page_dark' : ''}}" data-weui-theme="{{theme}}" data-weui-mode="{{mode}}">
 	<!-- <view class="page__hd" style="padding-left: 10px;padding-right: 10px; padding-bottom: 15px;padding-top: 5px;"> -->
 	<!-- <view class="page__title" style="text-align: center">This miniprogram caculates your GPA based on your inputs of each course.</view> -->
 	<!-- </view> -->
@@ -40,7 +40,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					<view class="weui-cells {{list[0].expand ? 'weui-cells_show' : ''}}">
 						<view class="weui-cells__group weui-cells__group_form">
 							<view class="weui-cell weui-cell_active">
-								<text>An unofficial SSBS-HS GPA Calculator.\n This miniprogram calculates your GPA based on your inputs of each course.</text>
+								<text user-select="true">An unofficial SSBS-HS GPA Calculator. This mini program calculates your GPA based on your inputs for each course.\n\nI'm no longer actively maintaining this project. The source code is open source on GitHub:\nhttps://github.com/ana-jiangR/GPA-Calculator\n\nFeel free to contribute on GitHub or contact me on WeChat.</text>
 							</view>
 						</view>
 					</view>
@@ -118,7 +118,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					<view class="weui-cells {{list[4].expand ? 'weui-cells_show' : ''}}">
 						<view class="weui-cells__group weui-cells__group_form">
 							<view class="weui-cell weui-cell_active">
-								<text user-select="true">If you have any suggestions and issues, please contact me by WeChat or email: \n \n Name: Ana 蒋韵涵 (Class of 2025) \n WeChat ID: Ajsyn-bnsi \n Email: ana.jiang@qq.com</text>
+								<text user-select="true">If you would like to contribute or discuss this project, feel free to contact me on WeChat or by email. Code contributions are welcome via Pull Requests on GitHub.\n\nName: Ana 蒋韵涵 (Class of 2025)\nWeChat ID: Ajsyn-bnsi\nEmail: ana.jiang@qq.com</text>
 							</view>
 						</view>
 					</view>
@@ -137,7 +137,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					<view class="weui-cells {{list[5].expand ? 'weui-cells_show' : ''}}">
 						<view class="weui-cells__group weui-cells__group_form">
 							<view class="weui-cell weui-cell_active">
-								<text>Current Version: 1.3.0 \n \n 1.3.0: 2024-11-13 \n Add 'PreAP' Level & Version History. \n \n 1.2.5: 2023-09-29 \n Add Contact Info.</text>
+								<text>Current Version: 1.3.1\n\n1.3.1: 2026-10-25\nAdd maintenance status, open source contribution information, and GitHub/WeChat copy buttons. Update the home page layout and fix the missing home page configuration.\n\n1.3.0: 2024-11-13\nAdd 'PreAP' Level and Version History.\n\n1.2.5: 2023-09-29\nAdd Contact Info.</text>
 
 							</view>
 

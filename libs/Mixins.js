@@ -20,8 +20,9 @@ function merge(mixins, options) {
           value.call(this, ...args);
           return originFunc && originFunc.call(this, ...args);
         };
-      } else {
-        options = { ...mixin, ...options };
+      } else if (!Object.prototype.hasOwnProperty.call(options, key)) {
+        // Copy only this member so later lifecycle hooks are not added twice.
+        options[key] = value;
       }
     }
   });

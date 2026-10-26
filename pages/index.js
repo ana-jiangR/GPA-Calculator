@@ -330,6 +330,8 @@ Page({
 
 
     data: {
+        repositoryUrl: 'https://github.com/ana-jiangR/GPA-Calculator',
+        wechatId: 'Ajsyn-bnsi',
         // isInvalid: false,
         isDialogResetAll: false,
         weightedGPA: INVALID_SCORE,
@@ -368,6 +370,25 @@ Page({
             },
         ],
     },
+    copyNoticeInfo(e) {
+        wx.setClipboardData({
+            data: e.currentTarget.dataset.value,
+            success() {
+                wx.showToast({
+                    title: '内容已复制',
+                    icon: 'success',
+                    duration: 1500,
+                });
+            },
+            fail() {
+                wx.showToast({
+                    title: '复制失败，请长按文字复制',
+                    icon: 'none',
+                });
+            },
+        });
+    },
+
     kindToggle(e) {
 
         const {

@@ -6,8 +6,8 @@ Page({
      */
     data: {
         list: [{
-            title: 'Basic Info',
-            expand: false,
+            title: 'Project Status and Open Source',
+            expand: true,
             pages: [],
             iconpng: "images/icon_nav_Math.png",
 
@@ -41,7 +41,7 @@ Page({
         },
         {
             title: 'Version History',
-            expand: true,
+            expand: false,
             pages: [],
 
             iconpng: 'images/icon_nav_Chinese.png',
